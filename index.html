@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="utf-8">
+	<title>CRUD con Ajax </title>
+	<link rel="stylesheet" type="text/css" href="https://markorg99.000webhostapp.com/CRUD-AJAX/bootstrap/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="https://markorg99.000webhostapp.com/CRUD-AJAX/bootstrap/css/font-awesome.css">
+	<link rel="stylesheet" type="text/css" href="https://markorg99.000webhostapp.com/CRUD-AJAX/bootstrap/css/custom.css">
+</head>
+<body>
+<div class="container">
+	<nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+  		<a class="navbar-brand" href="index.html" >Inicio</a>
+  		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+    		<span class="navbar-toggler-icon"></span>
+  		</button>
+
+	  	<div class="collapse navbar-collapse" id="navbarColor02">
+		    <ul class="navbar-nav mr-auto">
+		      	<li class="nav-item">
+		        <a class="nav-link" href="tablaUsuarios.php" >Tabla</a>
+		      	</li>
+		    </ul>
+
+	  	</div>
+
+	</nav>
+	<div class="row">
+		<div class="col-sm-12">
+			<button id="addnew" class="btn btn-dark"><span class="glyphicon glyphicon-plus"></span> Agregar nuevo</button>
+            <div id="alert" class="alert alert-dismissible alert-success text-center" style="margin-top:20px; display:none;">
+            	  <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <span id="alert_message"></span>
+            </div>  
+			<table id="table1" class="table table-bordered table-striped" style="margin-top:20px;">
+				<thead>
+					<th>ID</th>
+					<th>Nombre del juego</th>
+					<th>Desarrollador</th>
+					<th>Fecha de Lanzamiento</th>
+					<th>Acción</th>
+				</thead>
+				<tbody id="tbody"></tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<!--Modal Agregar Nuevo -->
+<div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            	<center><h4 class="modal-title" id="myModalLabel">Agregar Nuevo</h4></center>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+			<div class="container-fluid">
+			<form id="addForm">
+				<div class="row form-group">
+					<div class="col-sm-2">
+						<label class="control-label" style="position:relative; top:7px;">Nombre del juego:</label>
+					</div>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" name="firstname">
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-sm-2">
+						<label class="control-label" style="position:relative; top:7px;">Desarrollador:</label>
+					</div>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" name="lastname">
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-sm-2">
+						<label class="control-label" style="position:relative; top:7px;">Fecha de Lanzamiento:</label>
+					</div>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" name="address">
+					</div>
+				</div>
+            </div> 
+			</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
+                <button type="submit" class="btn btn-dark"><span class="glyphicon glyphicon-floppy-disk"></span> Guardar</a>
+			</form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Editar -->
+<div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            	<center><h4 class="modal-title" id="myModalLabel">Editar juego</h4></center>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+			<div class="container-fluid">
+			<form id="editForm">
+				<input type="hidden" class="id" name="id">
+				<div class="row form-group">
+					<div class="col-sm-2">
+						<label class="control-label" style="position:relative; top:7px;">Nombre del juego:</label>
+					</div>
+					<div class="col-sm-10">
+						<input type="text" class="form-control firstname" name="firstname">
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-sm-2">
+						<label class="control-label" style="position:relative; top:7px;">Desarrollador:</label>
+					</div>
+					<div class="col-sm-10">
+						<input type="text" class="form-control lastname" name="lastname">
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-sm-2">
+						<label class="control-label" style="position:relative; top:7px;">Fecha de Lanzamiento:</label>
+					</div>
+					<div class="col-sm-10">
+						<input type="text" class="form-control address" name="address">
+					</div>
+				</div>
+            </div> 
+			</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><span class="fa fa-close"></span> Cancelar</button>
+                <button type="submit" class="btn btn-dark"><span class="fa fa-check"></span> Actualizar</a>
+			</form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal Eliminar -->
+<div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <center><h4 class="modal-title" id="myModalLabel">Eliminar juego</h4></center>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">	
+            	<p class="text-center">¿Esta seguro en eliminar este juego?</p>
+				<h2 class="text-center fullname"></h2>
+			</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><span class="fa fa-close"></span> Cancelar</button>
+                <button type="button" class="btn btn-danger id"><span class="fa fa-trash"></span> Si</button>
+            
+			</div>
+
+        </div>
+    </div>
+</div>
+<script src="https://markorg99.000webhostapp.com/CRUD-AJAX/bootstrap/js/jquery.min.js"></script>
+<script src="https://markorg99.000webhostapp.com/CRUD-AJAX/bootstrap/js/bootstrap.js"></script>
+<script src="https://markorg99.000webhostapp.com/CRUD-AJAX/bootstrap/js/app.js"></script>
+</body>
+
+<footer class="text-center text-white fixed-bottom" style="background-color: #f8efef;">
+	<!-- Copyright -->
+
+	<div class="text-center p-3" style="background-color: #000000;">
+	 © 2021 Copyright: Marco Uriel Ramirez Grijalva
+	</div>
+	<!-- Copyright -->
+  </footer>
